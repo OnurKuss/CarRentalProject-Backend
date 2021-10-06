@@ -12,23 +12,41 @@ namespace ConsoleUI
         {
             CarManager carManager = new CarManager(new EfCarDal());
 
-            //foreach (var car in carManager.GetCarsByBrandId(1))
+            Car car1 = new Car()
+            {
+                CarId = 8,
+                BrandId = 7,
+                ColorId = 3,
+                DailyPrice = 1999,
+                ModelYear = 2007,
+                Description = "Benzin"
+            };
+            //carManager.AddToCar(car1);
+            //carManager.DeleteToCar(car1);
+            //car1.DailyPrice = 699;
+            //carManager.UpdateToCar(car1);
+
+            foreach (var carDetail in carManager.GetCarDetails())
+            {
+                Console.WriteLine(carDetail.BrandName + " /" + carDetail.ColorName + " /" + carDetail.DailyPrice);
+            }
+
+            //GetAllCars kullanımı
+
+            //foreach (var car in carManager.GetAllCars())
             //{
-            //    Console.WriteLine(car.BrandId + " : " + car.ModelYear);
+            //    Console.WriteLine("{0}---{1}---{2}", car.CarId, car.Description, car.DailyPrice);
             //}
-            //foreach (var car in carManager.GetCarsByColorId(1))
-            //{
-            //    Console.WriteLine(car.Description + " : " + car.ColorId);
-            //}
-            //carManager.AddToCar(new Car { Id = 6, BrandId = 3, ColorId = 4, DailyPrice = 1100, ModelYear = 2017, Description = "Benzinli" });
-            carManager.UpdateToCar(new Car { Id = 6, BrandId = 3, ColorId = 4, DailyPrice = 1100, ModelYear = 2005, Description = "Benzinli" });
-            //carManager.DeleteToCar(new Car {Id=7 });
-            //BrandManager brandManager = new BrandManager(new EfBrandDal());
-            //brandManager.AddBrand(new Brand { BrandId = 7, BrandName = "Bentley" });
-            //foreach (var brand in brandManager.GetBrands())
-            //{
-            //    Console.WriteLine("{0}--{1}" , brand.BrandId , brand.BrandName);
-            //}
+
+            //GetByCarId kullanımı
+
+            //Console.WriteLine(carManager.GetByCarId(1).Description);
+            //Console.WriteLine(carManager.GetByCarId(2).Description);
+            //Console.WriteLine(carManager.GetByCarId(3).Description);
+
+
+
+
 
 
 
