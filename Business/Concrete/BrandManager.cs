@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -14,33 +15,25 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-        public void AddBrand(Brand brand)
-        {
-            int name = brand.BrandName.Length;
-            if (name>=2)
-            {
-                _brandDal.Add(brand);
-            }
-            else
-            {
-                Console.WriteLine("En az iki karakterli olmalı");
-            }
-            
-        }
 
-        public void DeleteBrand(Brand brand)
+        public IResult AddBrand(Brand brand)
         {
             throw new NotImplementedException();
         }
 
-        public List<Brand> GetBrands()
-        {
-            return _brandDal.GetAll();
-        }
-
-        public void UpdateBrand(Brand brand)
+        public IResult DeleteBrand(Brand brand)
         {
             throw new NotImplementedException();
         }
-    }
+
+        public IDataResult<List<Brand>> GetBrands()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResult UpdateBrand(Brand brand)
+        {
+            throw new NotImplementedException();
+        }
+    }   
 }

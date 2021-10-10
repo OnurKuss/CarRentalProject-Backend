@@ -14,46 +14,48 @@ namespace ConsoleUI
 
             Car car1 = new Car()
             {
-                CarId = 8,
-                BrandId = 7,
-                ColorId = 3,
-                DailyPrice = 1999,
-                ModelYear = 2007,
-                Description = "Benzin"
+                CarId = 17,
+                BrandId = 3,
+                ColorId = 1,
+                DailyPrice = 600,
+                ModelYear = 2018,
+                Description = "Gasoline"
             };
-            //carManager.AddToCar(car1);
-            //carManager.DeleteToCar(car1);
-            //car1.DailyPrice = 699;
-            //carManager.UpdateToCar(car1);
+            //var result = carManager.AddToCar(car1);
+            //Console.WriteLine(result.Message);
+            
 
-            foreach (var carDetail in carManager.GetCarDetails())
+            Add_Delete_Update(carManager, car1);
+            //CarDetails(carManager);
+
+
+
+        }
+
+        private static void Add_Delete_Update(CarManager carManager, Car car1)
+        {
+            var result = carManager.DeleteToCar(car1);
+            Console.WriteLine(result.Message); 
+            
+        }
+
+        private static void CarDetails(CarManager carManager)
+        {
+            var result = carManager.GetCarDetails();
+
+            if (result.Success)
             {
-                Console.WriteLine(carDetail.BrandName + " /" + carDetail.ColorName + " /" + carDetail.DailyPrice);
+                foreach (var carDetail in result.Data)
+                {
+                    Console.WriteLine(carDetail.BrandName + " /" + carDetail.ColorName + " /" + carDetail.DailyPrice);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
             }
 
-            //GetAllCars kullanımı
-
-            //foreach (var car in carManager.GetAllCars())
-            //{
-            //    Console.WriteLine("{0}---{1}---{2}", car.CarId, car.Description, car.DailyPrice);
-            //}
-
-            //GetByCarId kullanımı
-
-            //Console.WriteLine(carManager.GetByCarId(1).Description);
-            //Console.WriteLine(carManager.GetByCarId(2).Description);
-            //Console.WriteLine(carManager.GetByCarId(3).Description);
-
-
-
-
-
-
-
-
-
-
-
+            
         }
     }
 }
