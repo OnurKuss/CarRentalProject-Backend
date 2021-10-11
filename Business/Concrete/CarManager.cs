@@ -37,7 +37,8 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetAllCars()
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+            var result = _carDal.GetAll();
+            return new SuccessDataResult<List<Car>>(result,Messages.CarListed);
         }
 
         public IDataResult<Car> GetByCarId(int Id)
@@ -47,7 +48,9 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return new SuccessDataResult<List<CarDetailDto>>( _carDal.GetCarDetails());
+            var result = _carDal.GetCarDetails();
+
+            return new SuccessDataResult<List<CarDetailDto>>(result,Messages.CarDetail);
         }
 
         public IResult UpdateToCar(Car car)

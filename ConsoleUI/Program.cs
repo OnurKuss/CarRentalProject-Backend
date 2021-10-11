@@ -10,52 +10,148 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new EfCarDal());
-
-            Car car1 = new Car()
-            {
-                CarId = 17,
-                BrandId = 3,
-                ColorId = 1,
-                DailyPrice = 600,
-                ModelYear = 2018,
-                Description = "Gasoline"
-            };
-            //var result = carManager.AddToCar(car1);
-            //Console.WriteLine(result.Message);
-            
-
-            Add_Delete_Update(carManager, car1);
-            //CarDetails(carManager);
 
 
+            //GetAllCustomer();
+            //AddDeleteUpdateCustomer();
+
+
+            //GetAllUsers();
+            //AddDeleteUpdateUsers();
+
+            //CarDetails();
+            //GetAllCar();
+            //AddDeleteUpdateCar();
 
         }
 
-        private static void Add_Delete_Update(CarManager carManager, Car car1)
+        private static void GetAllCustomer()
         {
-            var result = carManager.DeleteToCar(car1);
-            Console.WriteLine(result.Message); 
-            
-        }
-
-        private static void CarDetails(CarManager carManager)
-        {
-            var result = carManager.GetCarDetails();
-
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            var result = customerManager.GetAllCustomers();
             if (result.Success)
             {
-                foreach (var carDetail in result.Data)
+                Console.WriteLine(result.Message);
+                foreach (var customer in result.Data)
                 {
-                    Console.WriteLine(carDetail.BrandName + " /" + carDetail.ColorName + " /" + carDetail.DailyPrice);
+                    Console.WriteLine("Müşteri Id : " + customer.CustomerId + "\n Şirket Adı : " + customer.CompanyName);
                 }
             }
             else
             {
                 Console.WriteLine(result.Message);
             }
+        }
 
-            
+        private static void AddDeleteUpdateCustomer()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+
+            Customer customer = new Customer() { UserId = 1004, CompanyName = "HakanCompany" };
+            var result = customerManager.AddCustomer(customer);
+            Console.WriteLine(result.Message);
+            //var result2 = customerManager.AddCustomer(customer);
+            //Console.WriteLine(result2.Message);
+            //var result3 = customerManager.AddCustomer(customer);
+            //Console.WriteLine(result3.Message);
+        }
+
+        private static void GetAllUsers()
+        {
+            UserManager userManager = new UserManager(new EfUserDal());
+            var result = userManager.GetAllUsers();
+
+            if (result.Success)
+            {
+                Console.WriteLine(result.Message);
+                foreach (var user in result.Data)
+                {
+                    Console.WriteLine("{0}: \n {1}  \n {2}  \n {3}  ", user.UserId, user.FirstName, user.LastName, user.Email);
+                }
+
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+        }
+
+        private static void AddDeleteUpdateUsers()
+        {
+            UserManager userManager = new UserManager(new EfUserDal());
+            User user = new User()
+            {
+                FirstName = "Hakan",
+                LastName = "Bursa",
+                Email = "hakangmail",
+                Password = "123123"
+            };
+            userManager.AddUser(user);
+            //userManager.DeleteUser(user);
+            //userManager.UpdateUser(user);
+        }
+
+        private static void CarDetails()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            var result = carManager.GetCarDetails();
+
+            if (result.Success)
+            {
+                Console.WriteLine(result.Message);
+                foreach (var carDetail in result.Data)
+                {
+                    Console.WriteLine(carDetail.BrandName + " / " + carDetail.ColorName + " / " + carDetail.DailyPrice);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+        }
+
+        private static void GetAllCar()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            var result = carManager.GetAllCars();
+            if (result.Success)
+            {
+                Console.WriteLine(result.Message);
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine(car.CarId + " -- " + car.DailyPrice + " -- " + car.ModelYear + " -- " + car.Description);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+        }
+
+        private static void AddDeleteUpdateCar()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            Car car1 = new Car()
+            {
+                CarId = 14,
+                BrandId = 3,
+                ColorId = 1,
+                DailyPrice = 600,
+                ModelYear = 2018,
+                Description = "Gasoline"
+            };
+
+            var deleteCar = carManager.DeleteToCar(car1);
+            Console.WriteLine(deleteCar.Message);
+
+            //var addCar = carManager.AddToCar(car1);
+            //Console.WriteLine(addCar.Message);
+
+            //var updateCar = carManager.UpdateToCar(car1);
+            //Console.WriteLine(updateCar.Message);
         }
     }
 }
