@@ -10,6 +10,30 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            Rental rental = new Rental()
+            {
+                RentalId=2,
+                CarId=2,
+                CustomerId=2,
+                RentDate = new DateTime(2021, 10, 12),
+                ReturnDate = new DateTime(2021, 10, 15)
+            };
+
+            var result= rentalManager.IsCarEverRented(5);
+            Console.WriteLine(result.Message);
+
+            //rentalManager.UpdateRental(rental);
+            //var result = rentalManager.AddRental(rental);
+            //Console.WriteLine(result.Message);
+
+            //GetAllRental();
+
+
+
+
+
+
 
 
             //GetAllCustomer();
@@ -23,6 +47,26 @@ namespace ConsoleUI
             //GetAllCar();
             //AddDeleteUpdateCar();
 
+        }
+
+        private static void GetAllRental()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var result1 = rentalManager.GetAllRentals();
+
+
+            if (result1.Success)
+            {
+                Console.WriteLine(result1.Message);
+                foreach (var rentalCar in result1.Data)
+                {
+                    Console.WriteLine(rentalCar.RentalId + " / " + rentalCar.CustomerId + " / " + rentalCar.CarId + " /" + rentalCar.RentDate + " / " + rentalCar.ReturnDate);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result1.Message);
+            }
         }
 
         private static void GetAllCustomer()
