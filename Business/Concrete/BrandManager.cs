@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -18,7 +19,8 @@ namespace Business.Concrete
 
         public IResult AddBrand(Brand brand)
         {
-            throw new NotImplementedException();
+            _brandDal.Add(brand);
+            return new SuccessResult(Messages.BrandAdded);
         }
 
         public IResult DeleteBrand(Brand brand)
@@ -28,7 +30,8 @@ namespace Business.Concrete
 
         public IDataResult<List<Brand>> GetBrands()
         {
-            throw new NotImplementedException();
+            var result = _brandDal.GetAll();
+            return new SuccessDataResult<List<Brand>>(result, Messages.BrandListed);
         }
 
         public IResult UpdateBrand(Brand brand)
