@@ -1,10 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -17,15 +21,25 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult AddBrand(Brand brand)
         {
+            var result = BusinessRules.Run(CheckIfBrandNameExists(brand.BrandName));
+            if (result != null)
+            {
+                return result;
+            }
+
             _brandDal.Add(brand);
-            return new SuccessResult(Messages.BrandAdded);
+
+            return new SuccessResult("Başarıyla eklendi");
+
         }
 
         public IResult DeleteBrand(Brand brand)
         {
-            throw new NotImplementedException();
+            _brandDal.Delete(brand);
+            return new SuccessResult(Messages.BrandDeleted);
         }
 
         public IDataResult<List<Brand>> GetBrands()
@@ -36,7 +50,21 @@ namespace Business.Concrete
 
         public IResult UpdateBrand(Brand brand)
         {
-            throw new NotImplementedException();
+            _brandDal.Update(brand);
+            return new SuccessResult(Messages.BrandUpdated);
         }
-    }   
+
+        private IResult CheckIfBrandNameExists(string brandName)
+        {
+            var rentable = this.GetBrands();
+            foreach (var rental in rentable.Data)
+            {
+                if (rental.BrandName == brandName)
+                {
+                    return new ErrorResult("Aynı isim girilemez");
+                }
+            }
+            return new SuccessResult();
+        }
+    }
 }

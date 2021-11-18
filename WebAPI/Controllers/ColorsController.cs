@@ -11,19 +11,19 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RentalsController : ControllerBase
+    public class ColorsController : ControllerBase
     {
-        IRentalService _rentalService;
+        IColorService _colorService;
 
-        public RentalsController(IRentalService rentalService)
+        public ColorsController(IColorService colorService)
         {
-            _rentalService = rentalService;
+            _colorService = colorService;
         }
 
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
-            var result = _rentalService.GetAllRentals();
+            var result = _colorService.GetColors();
             if (result.Success)
             {
                 return Ok(result);
@@ -32,9 +32,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Rental rental)
+        public IActionResult Add(Color color)
         {
-            var result = _rentalService.AddRental(rental);
+            var result = _colorService.AddColor(color);
             if (result.Success)
             {
                 return Ok(result);
@@ -43,15 +43,25 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete(Rental rental)
+        public IActionResult Delete(Color color)
         {
-            var result = _rentalService.DeleteRental(rental);
+            var result = _colorService.DeleteColor(color);
             if (result.Success)
             {
-                return Ok(result);
+                return Ok(color);
             }
-            return BadRequest(result);
+            return BadRequest(color);
         }
 
+        [HttpPut("Update")]
+        public IActionResult Update(Color color)
+        {
+            var result = _colorService.UpdateColor(color);
+            if (result.Success)
+            {
+                return Ok(color);
+            }
+            return BadRequest(color);
+        }
     }
 }

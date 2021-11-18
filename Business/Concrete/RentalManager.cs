@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -19,10 +22,19 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult AddRental(Rental rental)
         {
+            var result = BusinessRules.Run(IsCarEverRented(rental.CarId),IsCarReturned(rental.CarId),IsCarAvaible(rental.CarId));
+
+            if (result != null)
+            {
+                return result;
+            }
+
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentalAdded);
+
         }
 
         public IResult DeleteRental(Rental rental)
@@ -48,25 +60,32 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalUpdated);
         }
 
-        public IResult IsCarEverRented(int Id)
+        public IResult IsCarEverRented(int carId)
         {
-            if (_rentalDal.GetAll(r => r.CarId == Id && r.RentDate==null!).Any())
+            var results = this.GetAllRentals().Data;
+            foreach (var result in results)
             {
-                return new SuccessResult(Messages.RentedCars);  
+                if (result.CarId==carId && result.RentDate==null!)
+                {
+                    return new ErrorResult(Messages.RentedCars);
+                }
             }
-            else
-            {
-                return new ErrorResult("Araba kiralanmadı zzz");
-            }
-            
+            return new SuccessResult();
         }
-        public IResult IsCarReturned(int Id)
+
+        public IResult IsCarReturned(int carId)
         {
-            if (_rentalDal.GetAll(r=> r.CarId==Id && r.ReturnDate==null).Any())
+            var results = this.GetAllRentals().Data;
+
+            foreach (var result in results)
             {
-                return new ErrorResult("Başarılı");
+                if (result.CarId==carId && result.ReturnDate==null)
+                {
+                    return new ErrorResult("Araç henüz geri dönmedi");
+                }
             }
-            return new SuccessResult("Başarısız");
+            return new SuccessResult();
+            
         }
 
         public IResult IsCarAvaible(int Id)
@@ -75,11 +94,10 @@ namespace Business.Concrete
             {
                 if (IsCarReturned(Id).Success)
                 {
-                    return new SuccessResult("Araç geri teslim alınmıştır.");
+                    return new SuccessResult();
                 }
-                return new ErrorResult("Kiramala için araç müsait değildir.");
             }
-            return new SuccessResult("Ara");
+            return new ErrorResult();
         }
     }
 }
