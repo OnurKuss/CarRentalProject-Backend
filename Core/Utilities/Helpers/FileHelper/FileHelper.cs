@@ -101,7 +101,7 @@ namespace Core.Utilities.Helpers.FileHelper
             using (FileStream fs = File.Create(directory))
             {
                 file.CopyTo(fs);
-                fs.Flush();
+                fs.Flush(); //arabelleği temizler ve arabelleğe alınan verileri dosyaya yazar
             }
         }
 
