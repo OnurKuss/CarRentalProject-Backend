@@ -77,7 +77,12 @@ namespace Business.Concrete
 
         public IDataResult<List<CarImage>> GetByCarId(int carId)
         {
-            throw new NotImplementedException();
+            var result = BusinessRules.Run(CheckCarImage(carId));
+            if (result != null)
+            {
+                return new ErrorDataResult<List<CarImage>>(GetDefaultImage(carId).Data);
+            }
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId));
         }
 
         public IDataResult<CarImage> GetCarImageByCarId(int carId)
@@ -106,6 +111,25 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        
+
+        private IDataResult<List<CarImage>> GetDefaultImage(int carId)
+        {
+
+            List<CarImage> carImage = new List<CarImage>();
+            carImage.Add(new CarImage { CarId = carId, Date = DateTime.Now, ImagePath = @"\uploads\logo.jpg" });
+            return new SuccessDataResult<List<CarImage>>(carImage);
+        }
+
+        private IResult CheckCarImage(int carId)
+        {
+            var result = _carImageDal.GetAll(c => c.CarId == carId).Count;
+            if (result > 0)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
+        }
+
+
     }
 }
