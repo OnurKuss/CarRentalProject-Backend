@@ -1,4 +1,5 @@
 ﻿using Business.Concrete;
+using Core.Entities.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -127,8 +128,7 @@ namespace ConsoleUI
             {
                 FirstName = "Hakan",
                 LastName = "Bursa",
-                Email = "hakangmail",
-                Password = "123123"
+                Email = "hakangmail"
             };
             userManager.AddUser(user);
             //userManager.DeleteUser(user);

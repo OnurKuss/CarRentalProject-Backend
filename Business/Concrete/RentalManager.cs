@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -22,10 +23,11 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
+        //[SecuredOperation("Rental.List")]
         [ValidationAspect(typeof(RentalValidator))]
         public IResult AddRental(Rental rental)
         {
-            var result = BusinessRules.Run(IsCarEverRented(rental.CarId),IsCarReturned(rental.CarId),IsCarAvaible(rental.CarId));
+            var result = BusinessRules.Run(IsCarEverRented(rental.CarId), IsCarReturned(rental.CarId), IsCarAvaible(rental.CarId));
 
             if (result != null)
             {
@@ -43,6 +45,9 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalDeleted);
         }
 
+        //[ValidationAspect(typeof(RentalValidator))]
+        //[SecuredOperation("Rental.List")]
+        //[SecuredOperation("Admin")]
         public IDataResult<List<Rental>> GetAllRentals()
         {
             var result = _rentalDal.GetAll();
@@ -62,30 +67,26 @@ namespace Business.Concrete
 
         public IResult IsCarEverRented(int carId)
         {
-            var results = this.GetAllRentals().Data;
-            foreach (var result in results)
+            var result = _rentalDal.GetAll(c => c.CarId == carId && c.RentDate != null).Count;
+
+            if (result>0)
             {
-                if (result.CarId==carId && result.RentDate==null!)
-                {
-                    return new ErrorResult(Messages.RentedCars);
-                }
+                return new ErrorResult(Messages.RentedCars);
             }
+
             return new SuccessResult();
         }
 
         public IResult IsCarReturned(int carId)
         {
-            var results = this.GetAllRentals().Data;
+            var result = _rentalDal.GetAll(c => c.CarId == carId && c.ReturnDate == null).Count;
 
-            foreach (var result in results)
+            if (result>0)
             {
-                if (result.CarId==carId && result.ReturnDate==null)
-                {
-                    return new ErrorResult("Araç henüz geri dönmedi");
-                }
+                return new ErrorResult("Araç henüz geri dönmedi");
             }
+
             return new SuccessResult();
-            
         }
 
         public IResult IsCarAvaible(int Id)

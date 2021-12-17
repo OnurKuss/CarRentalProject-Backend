@@ -29,17 +29,19 @@ namespace Business.Concrete
 
         public IResult DeleteColor(Color color)
         {
-            throw new NotImplementedException();
+            _colorDal.Delete(color);
+            return new SuccessResult();
         }
 
         public IDataResult<List<Color>> GetColors()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
         }
 
         public IResult UpdateColor(Color color)
         {
-            throw new NotImplementedException();
+            _colorDal.Update(color);
+            return new SuccessDataResult<Color>();
         }
     }
 }

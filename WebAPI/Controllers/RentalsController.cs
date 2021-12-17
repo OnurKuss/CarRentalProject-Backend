@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,8 +20,9 @@ namespace WebAPI.Controllers
         {
             _rentalService = rentalService;
         }
-
+        
         [HttpGet("getall")]
+        //[Authorize(Roles = "Rental.List")]
         public IActionResult GetAll()
         {
             var result = _rentalService.GetAllRentals();
@@ -30,6 +32,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
 
         [HttpPost("add")]
         public IActionResult Add(Rental rental)

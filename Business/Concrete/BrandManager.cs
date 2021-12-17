@@ -56,14 +56,13 @@ namespace Business.Concrete
 
         private IResult CheckIfBrandNameExists(string brandName)
         {
-            var rentable = this.GetBrands();
-            foreach (var rental in rentable.Data)
+            var rentable = _brandDal.GetAll(b => b.BrandName == brandName).Any();
+
+            if (rentable)
             {
-                if (rental.BrandName == brandName)
-                {
-                    return new ErrorResult("Aynı isim girilemez");
-                }
+                return new ErrorResult("Aynı isim girilemez");
             }
+
             return new SuccessResult();
         }
     }

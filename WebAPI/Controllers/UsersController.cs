@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Core.Entities.Concrete;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,6 +26,29 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _userService.GetAllUsers();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getClaims")]
+
+        public IActionResult GetClaims(User user)
+        {
+            var result = _userService.GetClaims(user);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpDelete("delete")]
+        public IActionResult Delete(User user)
+        {
+            var result = _userService.DeleteUser(user);
             if (result.Success)
             {
                 return Ok(result);
