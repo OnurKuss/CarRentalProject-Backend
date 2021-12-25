@@ -7,6 +7,7 @@ using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
-        //[SecuredOperation("Rental.List")]
+        [SecuredOperation("Rental.List")]
         [ValidationAspect(typeof(RentalValidator))]
         public IResult AddRental(Rental rental)
         {
@@ -99,6 +100,12 @@ namespace Business.Concrete
                 }
             }
             return new ErrorResult();
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
+        {
+            var result= _rentalDal.GetRentalDetails();
+            return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.RentalListed);
         }
     }
 }

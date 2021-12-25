@@ -1,5 +1,7 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.DependencyResolvers;
+using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
@@ -40,13 +42,7 @@ namespace WebAPI
 
             services.AddControllers();
 
-            
-
-
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:3000"));
-            //});
+            services.AddCors();
 
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
@@ -77,8 +73,12 @@ namespace WebAPI
 
             //services.AddSingleton<IUserService, UserManager>();
             //services.AddSingleton<IUserDal, EfUserDal>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            ServiceTool.Create(services);
+
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddDependencyResolvers(new ICoreModule[] {
+               new CoreModule()
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -96,7 +96,7 @@ namespace WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
 
-            //app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader());//post,delete,update,get izinver
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());//post,delete,update,get izinver
 
             app.UseHttpsRedirection();
 
