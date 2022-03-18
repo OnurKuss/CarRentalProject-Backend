@@ -116,7 +116,7 @@ namespace Business.Concrete
         {
 
             List<CarImage> carImage = new List<CarImage>();
-            carImage.Add(new CarImage { CarId = carId, Date = DateTime.Now, ImagePath = @"\uploads\logo.jpg" });
+            carImage.Add(new CarImage { CarId = carId, Date = DateTime.Now, ImagePath = @"\uploads\logo.jpg"});
             return new SuccessDataResult<List<CarImage>>(carImage);
         }
 
