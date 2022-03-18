@@ -49,6 +49,17 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(_carDal.Get(c=> c.CarId==Id));
         }
 
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
+        {
+            var result = _carDal.GetCarDetailsByBrandId(brandId);
+            return new SuccessDataResult<List<CarDetailDto>>(result,Messages.CarListByCategory);
+        }
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId)
+        {
+            var result = _carDal.GetCarDetailsByColorId(colorId);
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.CarListByCategory);
+        }
+
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             var result = _carDal.GetCarDetails();
@@ -60,6 +71,18 @@ namespace Business.Concrete
         {
             _carDal.Update(car);
             return new SuccessResult(Messages.CarUpdated);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsWithBrandAndColor(int colorId, int brandId)
+        {
+            var result= _carDal.GetCarDetailsWithBrandAndColor(colorId, brandId);
+            return new SuccessDataResult<List<CarDetailDto>>(result);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int carId)
+        {
+            var result = _carDal.GetCarDetailsByCarId(carId);
+            return new SuccessDataResult<List<CarDetailDto>>(result);
         }
     }
 }
