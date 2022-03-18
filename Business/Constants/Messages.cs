@@ -14,6 +14,7 @@ namespace Business.Constants
         public static string CarUpdated = "Araba Kayıdı Güncellendi";
         public static string CarListed = "Araba Kayıdı Bilgileri";
         public static string CarDetail = "Model / Renk / Fiyat bilgileri";
+        public static string CarListByCategory = "Arabalar Markaya göre listelendi";
 
         public static string CustomerListed = "Müşteri Listesi";
         public static string CustomerAdded = "Müşteri Kayıdı Eklendi";
@@ -44,5 +45,7 @@ namespace Business.Constants
         public static string UserRegistered="Kullanıcı başarıyla kaydedildi";
         public static string AccessTokenCreated = "Token oluşturuldu";
         public static string AuthorizationDenied = "Yetkiniz yok";
+
+        
     }
 }

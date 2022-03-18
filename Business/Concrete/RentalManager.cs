@@ -24,7 +24,7 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
-        [SecuredOperation("Rental.List")]
+       // [SecuredOperation("Rental.List")]
         [ValidationAspect(typeof(RentalValidator))]
         public IResult AddRental(Rental rental)
         {
@@ -47,7 +47,7 @@ namespace Business.Concrete
         }
 
         //[ValidationAspect(typeof(RentalValidator))]
-        //[SecuredOperation("Rental.List")]
+        [SecuredOperation("Rental.List")]
         //[SecuredOperation("Admin")]
         public IDataResult<List<Rental>> GetAllRentals()
         {
@@ -68,7 +68,7 @@ namespace Business.Concrete
 
         public IResult IsCarEverRented(int carId)
         {
-            var result = _rentalDal.GetAll(c => c.CarId == carId && c.RentDate != null).Count;
+            var result = _rentalDal.GetAll(c => c.CarId == carId && c.RentDate != null && c.ReturnDate!=null).Count;
 
             if (result>0)
             {
@@ -106,6 +106,12 @@ namespace Business.Concrete
         {
             var result= _rentalDal.GetRentalDetails();
             return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.RentalListed);
+        }
+
+        public IDataResult<Rental> GetRentalByCarId(int carId)
+        {
+            var result = _rentalDal.Get(r => r.CarId == carId);
+            return new SuccessDataResult<Rental>(result);
         }
     }
 }
